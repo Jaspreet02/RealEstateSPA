@@ -1,0 +1,78 @@
+<form class="login-form" #loginForm="ngForm" [formGroup]="userform" (ngSubmit)="OnSubmit()">
+  <div *ngIf="!isEmailSend" >
+    <div class="form-group">
+      <h1>Registration Form</h1>
+    </div>
+    <div class="form-group">
+      <label for="first-name" class="col-form-label">First Name:</label>
+      <input pInputText type="text" class="form-control" formControlName="firstname" [(ngModel)]="selectedUser.firstName" placeholder="Required" />
+      <div class="validation" *ngIf="!userform.controls['firstname'].valid&&userform.controls['firstname'].dirty">
+        Firstname is required
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="last-name" class="col-form-label">Last Name:</label>
+      <input pInputText type="text" class="form-control" formControlName="lastname" [(ngModel)]="selectedUser.lastName" placeholder="Required" />
+      <div class="validation" *ngIf="!userform.controls['lastname'].valid&&userform.controls['lastname'].dirty">
+        Lastname is required
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="phone-name" class="col-form-label">Phone Number:</label>
+      <input pInputText type="text" class="form-control" formControlName="phonenumber" [(ngModel)]="selectedUser.phoneNumber" placeholder="Required" />
+      <div class="validation" *ngIf="!userform.controls['phonenumber'].valid&&userform.controls['phonenumber'].dirty">
+        Phone Number is required
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email" class="col-form-label">Email:</label>
+      <input pInputText type="email" class="form-control" formControlName="email" [(ngModel)]="selectedUser.email" placeholder="Required" />
+      <div class="validation" *ngIf="!userform.controls['email'].valid&&userform.controls['email'].dirty">
+        <span *ngIf="userform.controls['email'].errors['required']">Email Address is required</span>
+        <span *ngIf="userform.controls['email'].errors['email']">Not valid email address</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password" class="col-form-label">Password:</label>
+      <input pInputText type="password" class="form-control" formControlName="password" [(ngModel)]="selectedUser.passwordHash" placeholder="Required" />
+      <div class="validation" *ngIf="!userform.controls['password'].valid&&userform.controls['password'].dirty">
+        <span *ngIf="userform.controls['password'].errors['required']">Password is required</span>
+        <span *ngIf="userform.controls['password'].errors['minlength']">Password must be at least 8 characters</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="confirmPassword" class="col-form-label">Confirm Password:</label>
+      <input pInputText type="password" class="form-control" formControlName="confirmpassword" [(ngModel)]="selectedUser.confirmPassword" placeholder="Required" />
+      <div class="validation" *ngIf="!userform.controls['confirmpassword'].valid&&userform.controls['confirmpassword'].dirty">
+        <span *ngIf="userform.controls['confirmpassword'].errors['required']">Password is required</span>
+        <span *ngIf="userform.controls['confirmpassword'].errors['mustMatch']">Passwords must match</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" formControlName="gender" [(ngModel)]="selectedUser.gender" id="inlineRadio1" value="M">
+        <label class="form-check-label" for="inlineRadio1">Male</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" formControlName="gender" [(ngModel)]="selectedUser.gender" id="inlineRadio2" value="F">
+        <label class="form-check-label" for="inlineRadio2">Female</label>
+      </div>
+      <div class="validation" *ngIf="!userform.controls['gender'].valid&&userform.controls['gender'].dirty">
+        Gender is required
+      </div>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Submit</button>
+    </div>
+    <div class="form-group">
+      <div *ngIf="isLoginError" class="ui-message ui-messages-error ui-corner-all" style="color: red;">
+        <i class="fa fa-close"></i>
+        {{errorMessage}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isEmailSend">
+    <h2>Confirmation Email Sent.</h2>
+    <h5>Please check your email and confirm your email address.</h5>
+  </div>
+</form>

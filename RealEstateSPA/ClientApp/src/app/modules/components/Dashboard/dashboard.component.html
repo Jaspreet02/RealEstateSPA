@@ -1,0 +1,75 @@
+<p-dataView #dv [value]="properties" [paginator]="true" paginatorPosition="both" filterBy="brand" [loading]="loading"
+    [sortOrder]="sortOrder" [sortField]="sortField" [rows]="pageSize" [lazy]="true" (onLazyLoad)="loadData($event)"
+    [totalRecords]="_total">
+    <p-header> 
+        <div class="ui-helper-clearfix">
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-2">
+                    <p-dropdown [options]="types" [(ngModel)]="type" placeholder="Type"
+                        (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
+                </div>
+                <div class="ui-g-12 ui-md-2">
+                    <p-dropdown [options]="groupedCities"
+                        [(ngModel)]="selectedCity" [style]="{'min-width':'140px'}" placeholder="Select City" [group]="true"
+                        [showClear]="false" (onChange)="getProperties()">
+                        <ng-template let-group pTemplate="group">
+                            <span>({{group.value}})</span>
+                            <span style="vertical-align:middle;margin-left:.25em">{{group.label}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+                <div class="ui-g-12 ui-md-2 filter-container">
+                    <div style="position:relative">
+                        <input type="search" [(ngModel)] = "intersection" pInputText placeholder="Search by intersection"
+                            (input)="onSearch($event.target.value)">
+                    </div>
+                </div>
+                <div class="ui-g-12 ui-md-2 ui-md-offset-1">                    
+                    Rent: {{rentValues[0] * 50 + ' - ' + rentValues[1] * 50}}
+                    <p-slider [(ngModel)]="rentValues" [style]="{'width':'14em'}" [range]="true" (onChange)="onYearChange($event)"></p-slider>
+                    <!-- <i class="pi pi-times" (click)="rentValues=[500,5000];onYearChange($event)" style="cursor:pointer" *ngIf="rentValues"></i> -->
+                    <!-- <p-slider [style]="{'width':'100%'}" [(ngModel)]="rentValues"  [range]="true" (onChange)="onYearChange($event)"></p-slider> -->
+                </div>
+                <div class="ui-g-12 ui-md-3" style="text-align:right">
+                    <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                </div>
+            </div>
+        </div>
+    </p-header>
+    <p-footer>
+        <div class="ui-helper-clearfix" style="width:100%">
+          <button type="button" pButton style="float:left" (click)="addProperty()" label="Add"></button>
+        </div>
+      </p-footer>
+    <ng-template let-item pTemplate="listItem">
+        <div class="ui-g-12">
+            <div class="car-details">
+                <div>
+                    <img src="../../../../assets/images/{{item.userId}}/{{item.propertyId}}/01.png"
+                        (error)="defaultUrl($event)" height="120" width="120">
+                    <div class="ui-g">
+                        <div class="ui-g-12"><b>${{item.rent}}</b></div>
+                        <div class="ui-g-12"><b>{{item.room}} Bedroom</b></div>
+                        <div class="ui-g-12"><b>({{item.user.phoneNumber | slice:0:3 }}) {{item.user.phoneNumber | slice:3:6}}-{{item.user.phoneNumber | slice:6:10}}</b></div>
+                        <div class="ui-g-12"><b>{{item.address.intersection + ' (' + item.address.city.name + ')'}}</b></div>
+                        <div class="ui-g-12"><b>{{item.description}}</b></div>
+                    </div>
+                </div>
+                <button pButton type="button" icon="pi pi-search" (click)="selectProperty($event, item)"></button>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template let-item pTemplate="gridItem">
+        <div style="padding:.5em" class="ui-g-12 ui-md-3">
+            <p-panel [header]=" '(' + (item.user.phoneNumber | slice:0:3) + ') ' + (item.user.phoneNumber | slice:3:6) + '-' + (item.user.phoneNumber | slice:6:10)" [style]="{'text-align':'center'}">
+                <img src="../../../../assets/images/{{item.userId}}/{{item.propertyId}}/01.png"
+                    (error)="defaultUrl($event)" height="60" width=60>
+                <div class="car-detail">${{item.rent}} - {{item.room}} Bedroom</div>
+                <div>{{item.description}}</div>
+                <hr class="ui-widget-content" style="border-top:0">
+                <button pButton type="button" icon="pi pi-search" (click)="selectProperty($event, item)"
+                    style="margin-top:0"></button>
+            </p-panel>
+        </div>
+    </ng-template>
+</p-dataView>

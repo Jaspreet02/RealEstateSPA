@@ -1,0 +1,105 @@
+<h1 id="tableLabel">User List</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!Users"><em>Loading...</em></p>
+
+<div class="table-responsive">
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="Users">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Contact</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Email Confirmed</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of Users">
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>({{user.phoneNumber | slice:0:3 }}) {{user.phoneNumber | slice:3:6}}-{{user.phoneNumber | slice:6:10}}</td>
+        <td>{{ user.email }}</td>
+        <td>{{user.gender == "M" ? "Male" : "Female"}}</td>
+        <td>{{ user.emailConfirmed }}</td>
+        <td>
+          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal" (click)="openModal(user)">Link</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template [ngIf]="selectedUser">
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="userform">
+            <div class="form-group">
+              <label for="first-name" class="col-form-label">First Name:</label>
+              <input pInputText type="text" class="form-control" formControlName="firstname" [(ngModel)]="selectedUser.firstName" placeholder="Required" />
+              <div class="validation" *ngIf="!userform.controls['firstname'].valid&&userform.controls['firstname'].dirty">
+                Firstname is required
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="last-name" class="col-form-label">Last Name:</label>
+              <input pInputText type="text" class="form-control" formControlName="lastname" [(ngModel)]="selectedUser.lastName" placeholder="Required" />
+              <div class="validation" *ngIf="!userform.controls['lastname'].valid&&userform.controls['lastname'].dirty">
+                Lastname is required
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="phone-name" class="col-form-label">Phone Number:</label>
+              <input pInputText type="text" class="form-control" formControlName="phonenumber" [(ngModel)]="selectedUser.phoneNumber" placeholder="Required" />
+              <div class="validation" *ngIf="!userform.controls['phonenumber'].valid&&userform.controls['phonenumber'].dirty">
+                Phone Number is required
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email" class="col-form-label">Email:</label>
+              <input pInputText type="email" class="form-control" formControlName="email" [(ngModel)]="selectedUser.email" placeholder="Required" />
+              <div class="validation" *ngIf="!userform.controls['email'].valid&&userform.controls['email'].dirty">
+                <span *ngIf="userform.controls['email'].errors['required']">Email Address is required</span>
+                <span *ngIf="userform.controls['email'].errors['email']">Not valid email address</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-6">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" formControlName="gender" [(ngModel)]="selectedUser.gender" id="inlineRadio1" value="M">
+                  <label class="form-check-label" for="inlineRadio1">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" formControlName="gender" [(ngModel)]="selectedUser.gender" id="inlineRadio2" value="F">
+                  <label class="form-check-label" for="inlineRadio2">Female</label>
+                </div>
+                <div class="validation" *ngIf="!userform.controls['gender'].valid&&userform.controls['gender'].dirty">
+                  Gender is required
+                </div>
+              </div>
+              <div class="form-check col-6">
+                <input type="checkbox" class="form-check-input" formControlName="emailconfirmed" [(ngModel)]="selectedUser.emailConfirmed">
+                <label class="form-check-label" for="emailConfirmed">Email Confirmed</label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onCloseHandled()">Close</button>
+          <button type="submit" class="btn btn-primary" data-dismiss="modal" [disabled]="!userform.valid" (click)="save()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

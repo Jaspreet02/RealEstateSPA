@@ -1,0 +1,10 @@
+.backgroundImage {
+/*    background: url(../../../../assets/images/landing-page2.png) no-repeat;*/
+    background-size: cover;
+    height: 100%;
+    position: relative;
+}
+
+.ui-panel.ui-widget {
+background-color: transparent !important;
+}
