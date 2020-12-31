@@ -2,14 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../../../shared/models/user';
 import { UserService } from '../../../core/services/user.service';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css'],
-  providers: [ConfirmationService,MessageService]
+  styleUrls: ['./user.component.css']
 })
 
 export class UserComponent implements OnInit {
@@ -34,7 +32,7 @@ export class UserComponent implements OnInit {
 
   userform: FormGroup;
 
-  constructor(private router: Router, private fb: FormBuilder, private confirmationService: ConfirmationService, private userService: UserService,private messageService: MessageService) { }
+  constructor(private router: Router, private fb: FormBuilder, private userService: UserService) { }
 
   ngOnInit() {
     this.getUsers();
@@ -57,16 +55,6 @@ export class UserComponent implements OnInit {
 
   onRowEditInit(user: User) {
     this.selectedUser = this.Users.find(x=> x.id == user.id);
-}
-
-onRowEditSave(user: User) {
-    if (user.id != null) {
-        this.selectedUser = null;
-        this.messageService.add({severity:'success', summary: 'Success', detail:'Car is updated'});
-    }
-    else {
-        this.messageService.add({severity:'error', summary: 'Error', detail:'Year is required'});
-    }
 }
 
 onRowEditCancel(car: User, index: number) {
@@ -96,18 +84,7 @@ onRowEditCancel(car: User, index: number) {
   }
 
   delete(userId, index) {
-    this.confirmationService.confirm({
-      message: 'Do you want to delete this record?',
-      header: 'Delete',
-      icon: 'fa fa-info-circle',
-      accept: () => {
-        this.userService.deleteUser(userId).subscribe(x =>
-          this.Users = this.Users.filter((val, i) => i != index)
-        );
-      },
-      reject: () => {
-      }
-    });
+    console.log("wokrig");
   }
 
   openModal(user) {

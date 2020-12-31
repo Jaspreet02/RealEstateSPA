@@ -2,25 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { InputMaskModule } from 'primeng/inputmask';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { PanelModule } from 'primeng/panel';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { PaginatorModule } from 'primeng/paginator';
-import { InputTextModule } from 'primeng/inputtext';
-import {TableModule} from 'primeng/table';
-import {SliderModule} from 'primeng/slider';
-import {MultiSelectModule} from 'primeng/multiselect';
-import {SpinnerModule} from 'primeng/spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {EditorModule} from 'primeng/editor';
-import {GalleriaModule} from 'primeng/galleria';
-import {CheckboxModule} from 'primeng/checkbox';
-import {DataViewModule} from 'primeng/dataview';
-import {InputNumberModule} from 'primeng/inputNumber';
-import {MessageModule} from 'primeng/message';
+import { JwPaginationModule } from 'jw-angular-pagination';
 
 import { AppComponent } from './app.component';
 import { UserComponent } from './components/user/user.component';
@@ -49,6 +32,7 @@ import { RoutingModule } from './routing.component';
 import { AuthGuard } from '../core/guards/auth.guard';
 import { AuthInterceptor } from '../core/guards/auth.interceptor';
 import { FetchDataComponent } from '../fetch-data/fetch-data.component';
+import { DateAgoPipe } from '../core/guards/DateAgoPipe';
 
 @NgModule({
   declarations: [
@@ -65,7 +49,8 @@ import { FetchDataComponent } from '../fetch-data/fetch-data.component';
     AdminHeaderComponent,
     PropertyComponent,
     FetchDataComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    DateAgoPipe
   ],
   imports: [
     BrowserModule,
@@ -73,25 +58,8 @@ import { FetchDataComponent } from '../fetch-data/fetch-data.component';
     ReactiveFormsModule,
     RoutingModule,
     HttpClientModule,
-    PaginatorModule,
-    DialogModule,
-    InputMaskModule,
-    InputTextModule,
-    ButtonModule,
-    PanelModule,
-    SpinnerModule,
     BrowserAnimationsModule,
-    InputSwitchModule,
-    TableModule,
-    MultiSelectModule,
-    SliderModule,
-    ConfirmDialogModule,
-    EditorModule,
-    GalleriaModule,
-    CheckboxModule,
-    DataViewModule,
-    InputNumberModule,
-    MessageModule
+    JwPaginationModule
   ],
   providers: [UserService, MasterService,AccountService,PropertyService,CityService,StateService,AddressService,AuthGuard,
     {

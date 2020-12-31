@@ -79,7 +79,7 @@ namespace RealEstate
             pageNumber = fetchAll ? 0 : pageNumber;
             var count = items.Count();
             pageSize = fetchAll ? count : pageSize;
-            var result = items.Skip(pageNumber * pageSize).Take(pageSize);
+            var result = items.Skip(--pageNumber * pageSize).Take(pageSize);
             return new PageResult<T>()
             {
                 result = result,

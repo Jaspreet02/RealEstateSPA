@@ -10,7 +10,8 @@ export class Property
     userId : number;
     status:boolean;
     rent:number;
-    room:number;
+  room: number;
+  createdAt: Date;
     address:Address;
     user: User;
 }

@@ -3,8 +3,6 @@ import { Router } from '@angular/router';
 import { Property } from '../../../shared/models/property';
 import { PropertyService } from '../../../core/services/property.service';
 import { MasterService } from '../../../core/services/master.service';
-import { SelectItem } from 'primeng/api';
-import { SelectItemGroup } from 'primeng/api';
 import { State } from '../../../shared/models/state';
 import { City } from '../../../shared/models/city';
 import { CityService } from '../../../core/services/city.service';
@@ -22,13 +20,11 @@ export class DashboardComponent implements OnInit {
 
   selectedProperty: Property;
 
-  types: SelectItem[];
+  types: any[];
 
   type: string = "-1";
 
   loading: boolean;
-
-  _total: number;
 
   sortField: string = 'CreatedAt';
 
@@ -36,9 +32,11 @@ export class DashboardComponent implements OnInit {
 
   sortOrder: number = -1;
 
-  pageNumber: number = 0;
+  pageNumber: number = 1;
 
-  pageSize: number = 12;
+  pageSize: number = 6;
+
+  totalPages: number[];
 
   states: State[];
 
@@ -46,25 +44,26 @@ export class DashboardComponent implements OnInit {
 
   selectedCity: number = -1;
 
-  groupedCities: SelectItemGroup[];
+  groupedCities: any[];
 
   rentValues: number[] = [0, 100];
 
   yearTimeout: any;
 
   constructor(private router: Router, private propertyService: PropertyService, private cityService: CityService, private stateService: StateService, private masterService: MasterService) {
+        this.getProperties();
   }
 
   ngOnInit() {
-    this.loading = true;
-    this.stateService.getStates(this.pageNumber, this.pageSize, this.sortField, 'desc')
-      .subscribe(x => {
-        this.states = x.result;
-        this.cityService
-          .getCities(this.pageNumber, this.pageSize, this.sortField, 'desc')
-          .subscribe(x => { this.cities = x.result; this.BindDropdown() });
-      });
-    this.getTypes();
+    //this.loading = true;
+    //this.stateService.getStates(this.pageNumber, this.pageSize, this.sortField, 'desc')
+    //  .subscribe(x => {
+    //    this.states = x.result;
+    //    this.cityService
+    //      .getCities(this.pageNumber, this.pageSize, this.sortField, 'desc')
+    //      .subscribe(x => { this.cities = x.result; this.BindDropdown() });
+    //  });
+    //this.getTypes();
   }
 
   selectProperty(event: Event, item: Property) {
@@ -88,6 +87,18 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  getDays(propertyDate): string {
+    console.log(propertyDate);
+    //Get 1 day in milliseconds
+    var one_day = 1000 * 60 * 60 * 24;
+
+    // Calculate the difference in milliseconds
+    var difference_ms = new Date().getTime() - new Date(propertyDate).getTime();
+
+    // Convert back to days and return
+    return new Date(Math.round(difference_ms / one_day)).toString();
+  }
+
   getProperties(): void {
     this.loading = true;
     let search ;
@@ -99,15 +110,12 @@ export class DashboardComponent implements OnInit {
     }
     this.propertyService
       .getProperties(parseInt(this.type), this.selectedCity,search, this.rentValues, this.pageNumber, this.pageSize, this.sortField, this.sortOrder == 1 ? 'asc' : 'desc')
-      .subscribe(x => (this.properties = x.result, this._total = x.count, this.loading = false));
+      .subscribe(x => (this.properties = x.result, this.totalPages = Array(x.count/this.pageSize).fill(0).map((x, i) => i + 1), this.loading = false));
   }
 
   loadData(event) {
-    this.pageNumber = parseInt(event.first) / parseInt(event.rows);
-    this.pageSize = event.rows;
+    this.pageNumber = event;
     this.getProperties();
-    //event.first = First row offset
-    //event.rows = Number of rows per page
   }
 
 

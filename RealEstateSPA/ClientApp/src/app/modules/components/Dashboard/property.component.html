@@ -1,155 +1,156 @@
 <div class="container body-content">
-    <div *ngIf="_selectedProperty">
-        <form [formGroup]="_propertyform" (ngSubmit)="save()">
-            <p-panel header="Property Detail">
-                <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">                    
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            Type *:
-                        </div>
-                        <div class="ui-grid-col-6">
-                            <p-dropdown id="type" name="type" formControlName="type" [options]="_types" [(ngModel)]="_type" (onChange)="EnableField()" placeholder="Select Type"
-                                optionLabel="label"></p-dropdown>
-                        </div>
-                        <div class="ui-grid-col-4">
-                            <p-message severity="error" text="Type is required" *ngIf="!_propertyform.controls['type'].valid&&_propertyform.controls['type'].dirty"></p-message>
-                        </div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            Description *:
-                        </div>
-                        <div class="ui-grid-col-6">
-                            <input pInputText type="text" formControlName="description" [(ngModel)]="_selectedProperty.description" placeholder="Required" />
-                        </div>
-                        <div class="ui-grid-col-4">
-                        </div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            Rent *:
-                        </div>
-                        <div class="ui-grid-col-6">
-                            <p-inputNumber formControlName="rent" [(ngModel)]="_selectedProperty.rent" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
-                         </div>
-                        <div class="ui-grid-col-4">
-                            <p-message severity="error" [text]="_propertyform.controls['rent'].errors['required'] ? 'Rent is required' : _propertyform.controls['rent'].errors['min'] ? 'Must be longer than 100' : ''" 
-                                   *ngIf="!_propertyform.controls['rent'].valid&&_propertyform.controls['rent'].dirty"></p-message>
-                        </div>
-                    </div>                      
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            Room *:
-                        </div>
-                        <div class="ui-grid-col-6">
-                            <p-inputNumber formControlName="room" [(ngModel)]="_selectedProperty.room" [showButtons]="true" [min]="1" [max]="5"></p-inputNumber>
-                        </div>
-                        <div class="ui-grid-col-4">
-                            <p-message severity="error" [text]="_propertyform.controls['room'].errors['required'] ? 'This field is required' : _propertyform.controls['room'].errors['min'] ? 'Must be longer than 1' : ''" 
-                                   *ngIf="!_propertyform.controls['room'].valid&&_propertyform.controls['room'].dirty"></p-message>
-                        </div>
-                    </div>                   
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            Street *:
-                        </div>
-                        <div class="ui-grid-col-6">
-                            <input pInputText type="text" formControlName="street" [(ngModel)]="_selectedProperty.address.street" placeholder="Required" />
-                        </div>
-                        <div class="ui-grid-col-4">
-                            <p-message severity="error" text="This field is required" *ngIf="!_propertyform.controls['street'].valid&&_propertyform.controls['street'].dirty"></p-message>
-                        </div>
-                    </div>
-                    <div class="ui-grid-row" *ngIf="_isFieldEnable">
-                        <div class="ui-grid-col-2">
-                           Unit Number *:
-                        </div>
-                        <div class="ui-grid-col-6">
-                            <input pInputText type="text" formControlName="unitnumber" [(ngModel)]="_selectedProperty.address.unitnumber" placeholder="Required" />
-                        </div>
-                        <div class="ui-grid-col-4">
-                            <p-message severity="error" [text]="_propertyform.controls['unitnumber'].errors['required'] ? 'This field is required' : _propertyform.controls['unitnumber'].errors['min'] ? 'Must be longer than 1' : ''" 
-                            *ngIf="!_propertyform.controls['unitnumber'].valid&&_propertyform.controls['unitnumber'].dirty"></p-message>
-                        </div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            Number *:
-                        </div>
-                        <div class="ui-grid-col-6">
-                            <input pInputText type="text" formControlName="number" [(ngModel)]="_selectedProperty.address.number" placeholder="Required" />
-                        </div>
-                        <div class="ui-grid-col-4">
-                            <p-message severity="error" [text]="_propertyform.controls['number'].errors['required'] ? 'This field is required' : _propertyform.controls['number'].errors['min'] ? 'Must be longer than 1' : ''" 
-                            *ngIf="!_propertyform.controls['number'].valid&&_propertyform.controls['number'].dirty"></p-message>
-                        </div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            State *:
-                        </div>
-                        <div class="ui-grid-col-6">
-                            <p-dropdown id="state" name="state" formControlName="state" [options]="_states" [(ngModel)]="_state" (onChange)="bindCity()" placeholder="Select State"
-                            optionLabel="name"></p-dropdown></div>
-                        <div class="ui-grid-col-4">
-                         </div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            City *:
-                        </div>
-                        <div class="ui-grid-col-6">
-                            <p-dropdown id="city" name="city" formControlName="city" [options]="_selectedCities" [(ngModel)]="_city"  placeholder="Select City"
-                            optionLabel="name"></p-dropdown>
-                        </div>
-                        <div class="ui-grid-col-4">
-                            <p-message severity="error" text="This field is required" *ngIf="!_propertyform.controls['city'].valid&&_propertyform.controls['city'].dirty"></p-message>
-                        </div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            Intersection *:
-                        </div>
-                        <div class="ui-grid-col-6">
-                            <input pInputText type="text" formControlName="intersection" [(ngModel)]="_selectedProperty.address.intersection" placeholder="Required" />
-                        </div>
-                        <div class="ui-grid-col-4">
-                            <p-message severity="error" text="This field is required" *ngIf="!_propertyform.controls['intersection'].valid&&_propertyform.controls['intersection'].dirty"></p-message>
-                        </div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            Postal Code *:
-                        </div>
-                        <div class="ui-grid-col-6">
-                            <input pInputText type="text" formControlName="postalcode" [(ngModel)]="_selectedProperty.address.postalcode" placeholder="Required" />
-                        </div>
-                        <div class="ui-grid-col-4">
-                           <p-message severity="error" text="This field is required" *ngIf="!_propertyform.controls['postalcode'].valid&&_propertyform.controls['postalcode'].dirty"></p-message>
-                        </div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            Status *:
-                        </div>
-                        <div class="ui-grid-col-6">
-                                <p-inputSwitch formControlName="status" onLabel="true" offLabel="false" [(ngModel)]="_selectedProperty.Status"></p-inputSwitch>
-                        </div>
-                        <div class="ui-grid-col-4">
-                        </div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-2"></div>
-                        <div class="ui-grid-col-3">
-                            <button pButton type="submit" label="Submit" [disabled]="!_propertyform.valid"></button>
-                        </div>
-                        <div class="ui-grid-col-3">
-                            <button pButton label="Cancel" type="button" class="ui-button-warning" (click)="cancel()"></button>
-                        </div>
-                        <div class="ui-grid-col-4"></div>
-                    </div>
-                </div>
-            </p-panel>
-        </form>
-    </div>
+  <div *ngIf="_selectedProperty">
+    <form [formGroup]="_propertyform" (ngSubmit)="save()">
+      <p-panel header="Property Detail">
+        <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              Type *:
+            </div>
+            <div class="ui-grid-col-6">
+              <p-dropdown id="type" name="type" formControlName="type" [options]="_types" [(ngModel)]="_type" (onChange)="EnableField()" placeholder="Select Type"
+                          optionLabel="label"></p-dropdown>
+            </div>
+            <div class="ui-grid-col-4">
+              <p-message severity="error" text="Type is required" *ngIf="!_propertyform.controls['type'].valid&&_propertyform.controls['type'].dirty"></p-message>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              Description *:
+            </div>
+            <div class="ui-grid-col-6">
+              <input pInputText type="text" formControlName="description" [(ngModel)]="_selectedProperty.description" placeholder="Required" />
+            </div>
+            <div class="ui-grid-col-4">
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              Rent *:
+            </div>
+            <div class="ui-grid-col-6">
+              <p-inputNumber formControlName="rent" [(ngModel)]="_selectedProperty.rent" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+            </div>
+            <div class="ui-grid-col-4">
+              <p-message severity="error" [text]="_propertyform.controls['rent'].errors['required'] ? 'Rent is required' : _propertyform.controls['rent'].errors['min'] ? 'Must be longer than 100' : ''"
+                         *ngIf="!_propertyform.controls['rent'].valid&&_propertyform.controls['rent'].dirty"></p-message>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              Room *:
+            </div>
+            <div class="ui-grid-col-6">
+              <p-inputNumber formControlName="room" [(ngModel)]="_selectedProperty.room" [showButtons]="true" [min]="1" [max]="5"></p-inputNumber>
+            </div>
+            <div class="ui-grid-col-4">
+              <p-message severity="error" [text]="_propertyform.controls['room'].errors['required'] ? 'This field is required' : _propertyform.controls['room'].errors['min'] ? 'Must be longer than 1' : ''"
+                         *ngIf="!_propertyform.controls['room'].valid&&_propertyform.controls['room'].dirty"></p-message>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              Street *:
+            </div>
+            <div class="ui-grid-col-6">
+              <input pInputText type="text" formControlName="street" [(ngModel)]="_selectedProperty.address.street" placeholder="Required" />
+            </div>
+            <div class="ui-grid-col-4">
+              <p-message severity="error" text="This field is required" *ngIf="!_propertyform.controls['street'].valid&&_propertyform.controls['street'].dirty"></p-message>
+            </div>
+          </div>
+          <div class="ui-grid-row" *ngIf="_isFieldEnable">
+            <div class="ui-grid-col-2">
+              Unit Number *:
+            </div>
+            <div class="ui-grid-col-6">
+              <input pInputText type="text" formControlName="unitnumber" [(ngModel)]="_selectedProperty.address.unitnumber" placeholder="Required" />
+            </div>
+            <div class="ui-grid-col-4">
+              <p-message severity="error" [text]="_propertyform.controls['unitnumber'].errors['required'] ? 'This field is required' : _propertyform.controls['unitnumber'].errors['min'] ? 'Must be longer than 1' : ''"
+                         *ngIf="!_propertyform.controls['unitnumber'].valid&&_propertyform.controls['unitnumber'].dirty"></p-message>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              Number *:
+            </div>
+            <div class="ui-grid-col-6">
+              <input pInputText type="text" formControlName="number" [(ngModel)]="_selectedProperty.address.number" placeholder="Required" />
+            </div>
+            <div class="ui-grid-col-4">
+              <p-message severity="error" [text]="_propertyform.controls['number'].errors['required'] ? 'This field is required' : _propertyform.controls['number'].errors['min'] ? 'Must be longer than 1' : ''"
+                         *ngIf="!_propertyform.controls['number'].valid&&_propertyform.controls['number'].dirty"></p-message>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              State *:
+            </div>
+            <div class="ui-grid-col-6">
+              <p-dropdown id="state" name="state" formControlName="state" [options]="_states" [(ngModel)]="_state" (onChange)="bindCity()" placeholder="Select State"
+                          optionLabel="name"></p-dropdown>
+            </div>
+            <div class="ui-grid-col-4">
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              City *:
+            </div>
+            <div class="ui-grid-col-6">
+              <p-dropdown id="city" name="city" formControlName="city" [options]="_selectedCities" [(ngModel)]="_city" placeholder="Select City"
+                          optionLabel="name"></p-dropdown>
+            </div>
+            <div class="ui-grid-col-4">
+              <p-message severity="error" text="This field is required" *ngIf="!_propertyform.controls['city'].valid&&_propertyform.controls['city'].dirty"></p-message>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              Intersection *:
+            </div>
+            <div class="ui-grid-col-6">
+              <input pInputText type="text" formControlName="intersection" [(ngModel)]="_selectedProperty.address.intersection" placeholder="Required" />
+            </div>
+            <div class="ui-grid-col-4">
+              <p-message severity="error" text="This field is required" *ngIf="!_propertyform.controls['intersection'].valid&&_propertyform.controls['intersection'].dirty"></p-message>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              Postal Code *:
+            </div>
+            <div class="ui-grid-col-6">
+              <input pInputText type="text" formControlName="postalcode" [(ngModel)]="_selectedProperty.address.postalcode" placeholder="Required" />
+            </div>
+            <div class="ui-grid-col-4">
+              <p-message severity="error" text="This field is required" *ngIf="!_propertyform.controls['postalcode'].valid&&_propertyform.controls['postalcode'].dirty"></p-message>
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+              Status *:
+            </div>
+            <div class="ui-grid-col-6">
+              <p-inputSwitch formControlName="status" onLabel="true" offLabel="false" [(ngModel)]="_selectedProperty.Status"></p-inputSwitch>
+            </div>
+            <div class="ui-grid-col-4">
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-2"></div>
+            <div class="ui-grid-col-3">
+              <button pButton type="submit" label="Submit" [disabled]="!_propertyform.valid"></button>
+            </div>
+            <div class="ui-grid-col-3">
+              <button pButton label="Cancel" type="button" class="ui-button-warning" (click)="cancel()"></button>
+            </div>
+            <div class="ui-grid-col-4"></div>
+          </div>
+        </div>
+      </p-panel>
+    </form>
+  </div>
 </div>

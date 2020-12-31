@@ -2,13 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { SelectItem } from 'primeng/api';
 import { Property } from '../../../shared/models/property';
 import { PropertyService } from '../../../core/services/property.service';
 import { MasterService } from '../../../core/services/master.service';
 import { CityService } from '../../../core/services/city.service';
 import { StateService } from '../../../core/services/state.service';
-import { MessageService } from 'primeng/api';
 import { AddressService } from '../../../core/services/address.service';
 import { State } from '../../../shared/models/state';
 import { City } from '../../../shared/models/city';
@@ -17,8 +15,7 @@ import { Address } from '../../../shared/models/address';
 @Component({
   selector: 'app-property',
   templateUrl: './property.component.html',
-  styleUrls: ['./property.component.css'],
-  providers: [MessageService]
+  styleUrls: ['./property.component.css']
 })
 
 export class PropertyComponent implements OnInit {
@@ -29,9 +26,9 @@ export class PropertyComponent implements OnInit {
 
   _selectedProperty: Property;
 
-  _types: SelectItem[];
+  _types: any[];
 
-  _type: SelectItem;
+  _type: any;
 
   _states: State[];
 
@@ -48,7 +45,7 @@ export class PropertyComponent implements OnInit {
   _propertyform: FormGroup;
 
   constructor(private addressSerice : AddressService ,private propertyService: PropertyService, private masterService: MasterService, private cityService: CityService, private stateService: StateService,
-    private location: Location, private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private messageService: MessageService) {
+    private location: Location, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) {
     this.route.params.subscribe(res => {
       if (res['id']) {
         this._propertyId = res.id;

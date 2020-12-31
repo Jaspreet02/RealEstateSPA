@@ -22,10 +22,6 @@ export class LoginComponent implements OnInit {
     this.value = false;
   }
 
-  ngOnChanges() {
-
-  }
-
   OnSubmit(userName, password) {
     this.isLoginError = false;
     this.accountService.userAuthentication(userName, password).subscribe((data: any) => {
