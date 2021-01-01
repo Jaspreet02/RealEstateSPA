@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { JwPaginationModule } from 'jw-angular-pagination';
 
 import { AppComponent } from './app.component';
 import { UserComponent } from './components/user/user.component';
@@ -33,6 +32,7 @@ import { AuthGuard } from '../core/guards/auth.guard';
 import { AuthInterceptor } from '../core/guards/auth.interceptor';
 import { FetchDataComponent } from '../fetch-data/fetch-data.component';
 import { DateAgoPipe } from '../core/guards/DateAgoPipe';
+import { JwPaginationComponent } from '../core/guards/JwPaginationComponent';
 
 @NgModule({
   declarations: [
@@ -50,7 +50,8 @@ import { DateAgoPipe } from '../core/guards/DateAgoPipe';
     PropertyComponent,
     FetchDataComponent,
     RegistrationComponent,
-    DateAgoPipe
+    DateAgoPipe,
+    JwPaginationComponent
   ],
   imports: [
     BrowserModule,
@@ -58,8 +59,7 @@ import { DateAgoPipe } from '../core/guards/DateAgoPipe';
     ReactiveFormsModule,
     RoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule,
-    JwPaginationModule
+    BrowserAnimationsModule
   ],
   providers: [UserService, MasterService,AccountService,PropertyService,CityService,StateService,AddressService,AuthGuard,
     {

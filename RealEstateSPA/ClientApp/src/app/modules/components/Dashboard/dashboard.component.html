@@ -94,22 +94,6 @@
       </div>
     </div>
     <nav aria-label="Page navigation example">
-      <ul *ngIf="properties && properties.length" class="pagination">
-        <li [ngClass]="{disabled:pageNumber === 1}" class="page-item first-item">
-          <a (click)="loadData(1)" class="page-link">First</a>
-        </li>
-        <li [ngClass]="{disabled:pageNumber === 1}" class="page-item previous-item">
-          <a (click)="loadData(pageNumber - 1)" class="page-link">Previous</a>
-        </li>
-        <li *ngFor="let page of totalPages" [ngClass]="{active:pageNumber === page}" class="page-item number-item">
-          <a (click)="loadData(page)" class="page-link">{{page}}</a>
-        </li>
-        <li [ngClass]="{disabled:pageNumber === totalPages.length}" class="page-item next-item">
-          <a (click)="loadData(pageNumber + 1)" class="page-link">Next</a>
-        </li>
-        <li [ngClass]="{disabled:pageNumber === totalPages.length}" class="page-item last-item">
-          <a (click)="loadData(totalPages.length)" class="page-link">Last</a>
-        </li>
-      </ul>
+      <jw-pagination [totalCount]="10" [size]="pageSize" (changePage)="loadData($event)"></jw-pagination>
     </nav>
   </div>

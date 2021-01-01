@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
 
   pageSize: number = 6;
 
-  totalPages: number[];
+  totalCount: number;
 
   states: State[];
 
@@ -51,7 +51,6 @@ export class DashboardComponent implements OnInit {
   yearTimeout: any;
 
   constructor(private router: Router, private propertyService: PropertyService, private cityService: CityService, private stateService: StateService, private masterService: MasterService) {
-        this.getProperties();
   }
 
   ngOnInit() {
@@ -64,6 +63,7 @@ export class DashboardComponent implements OnInit {
     //      .subscribe(x => { this.cities = x.result; this.BindDropdown() });
     //  });
     //this.getTypes();
+    this.getProperties();
   }
 
   selectProperty(event: Event, item: Property) {
@@ -87,18 +87,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getDays(propertyDate): string {
-    console.log(propertyDate);
-    //Get 1 day in milliseconds
-    var one_day = 1000 * 60 * 60 * 24;
-
-    // Calculate the difference in milliseconds
-    var difference_ms = new Date().getTime() - new Date(propertyDate).getTime();
-
-    // Convert back to days and return
-    return new Date(Math.round(difference_ms / one_day)).toString();
-  }
-
   getProperties(): void {
     this.loading = true;
     let search ;
@@ -110,7 +98,7 @@ export class DashboardComponent implements OnInit {
     }
     this.propertyService
       .getProperties(parseInt(this.type), this.selectedCity,search, this.rentValues, this.pageNumber, this.pageSize, this.sortField, this.sortOrder == 1 ? 'asc' : 'desc')
-      .subscribe(x => (this.properties = x.result, this.totalPages = Array(x.count/this.pageSize).fill(0).map((x, i) => i + 1), this.loading = false));
+      .subscribe(x => (this.properties = x.result, this.totalCount = x.count, this.loading = false));
   }
 
   loadData(event) {
