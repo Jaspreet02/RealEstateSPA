@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
 
   groupedCities: any[];
 
-  rentValues: number[] = [0, 100];
+  rentValue: number = 100;
 
   yearTimeout: any;
 
@@ -54,15 +54,15 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.loading = true;
-    //this.stateService.getStates(this.pageNumber, this.pageSize, this.sortField, 'desc')
-    //  .subscribe(x => {
-    //    this.states = x.result;
-    //    this.cityService
-    //      .getCities(this.pageNumber, this.pageSize, this.sortField, 'desc')
-    //      .subscribe(x => { this.cities = x.result; this.BindDropdown() });
-    //  });
-    //this.getTypes();
+    this.loading = true;
+    this.stateService.getStates(this.pageNumber, this.pageSize, this.sortField, 'desc')
+      .subscribe(x => {
+        this.states = x.result;
+        this.cityService
+          .getCities(this.pageNumber, this.pageSize, this.sortField, 'desc')
+          .subscribe(x => { this.cities = x.result; this.BindDropdown() });
+      });
+    this.getTypes();
     this.getProperties();
   }
 
@@ -97,7 +97,7 @@ export class DashboardComponent implements OnInit {
       search = this.intersection;
     }
     this.propertyService
-      .getProperties(parseInt(this.type), this.selectedCity,search, this.rentValues, this.pageNumber, this.pageSize, this.sortField, this.sortOrder == 1 ? 'asc' : 'desc')
+      .getProperties(parseInt(this.type), this.selectedCity,search, [0,this.rentValue], this.pageNumber, this.pageSize, this.sortField, this.sortOrder == 1 ? 'asc' : 'desc')
       .subscribe(x => (this.properties = x.result, this.totalCount = x.count, this.loading = false));
   }
 
@@ -105,7 +105,6 @@ export class DashboardComponent implements OnInit {
     this.pageNumber = event;
     this.getProperties();
   }
-
 
   BindDropdown() {
     let result = [];
@@ -124,7 +123,7 @@ export class DashboardComponent implements OnInit {
     this.groupedCities = result;
   }
 
-  onYearChange(event) {
+  onYearChange() {
     if (this.yearTimeout) {
       clearTimeout(this.yearTimeout);
     }
@@ -135,6 +134,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onSortChange(event) {
+    console.log(event);
     this.getProperties();
   }
 

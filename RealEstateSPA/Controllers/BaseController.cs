@@ -76,10 +76,10 @@ namespace RealEstate
 
         protected IPageResult<T> CreatePageResult<T>(IQueryable<T> items, int pageNumber, int pageSize,bool fetchAll)
         {
-            pageNumber = fetchAll ? 0 : pageNumber;
+            pageNumber = fetchAll ? 0 : pageNumber - 1;
             var count = items.Count();
             pageSize = fetchAll ? count : pageSize;
-            var result = items.Skip(--pageNumber * pageSize).Take(pageSize);
+            var result = items.Skip(pageNumber * pageSize).Take(pageSize);
             return new PageResult<T>()
             {
                 result = result,

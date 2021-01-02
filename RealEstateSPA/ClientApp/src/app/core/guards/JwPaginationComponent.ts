@@ -22,28 +22,19 @@ import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChange
   styles: ['.page-item .page-link { cursor: pointer; }']
 })
 
-export class JwPaginationComponent implements OnInit {
+export class JwPaginationComponent implements OnChanges {
   @Output() changePage = new EventEmitter<number>(true);
   @Input() page = 1;
   @Input() size = 10;
-  @Input() totalCount = 0;
+  @Input() totalCount = 1;
   @Input() totalPages: number[];
 
-  ngOnInit() {
-    // set page if items array isn't empty
-    this.totalPages = Array(Math.round(this.totalCount / this.size)).fill(0).map((x, i) => i + 1);
-    if (this.totalPages && this.totalPages.length) {
-      this.setPage(this.page);
+  ngOnChanges(changes: SimpleChanges) {
+    // reset page if items array has changed
+    if (changes.totalCount.currentValue !== changes.totalCount.previousValue) {
+      this.totalPages = Array(Math.floor(this.totalCount / this.size) + (this.totalCount % this.size > 0 ? 1 : 0)).fill(0).map((x, i) => i + 1);
     }
   }
-
-  //ngOnChanges(changes: SimpleChanges) {
-  //  console.log(changes);
-  //  // reset page if items array has changed
-  //  if (changes.totalPages.currentValue !== changes.totalPages.previousValue) {
-  //    this.setPage(this.initialPage);
-  //  }
-  //}
 
   setPage(page: number) {
     this.page = page;

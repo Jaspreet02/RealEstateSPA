@@ -76,24 +76,43 @@
 </div>
 -->
   <div class="row">
-    <div class="col-md-4" *ngFor="let property of properties">
-      <div class="card mb-4 box-shadow">
-        <div class="card-header"><b>({{property.user.phoneNumber | slice:0:3 }}) {{property.user.phoneNumber | slice:3:6}}-{{property.user.phoneNumber | slice:6:10}}</b></div>
-        <img src="../../../../assets/images/landing-page2.png" alt="Card image cap" class="card-img-top">
-        <div class="card-body">
-          <h5 class="card-title">${{property.rent}} - {{property.room}} Bedroom</h5>
-          <p class="card-text">{{property.description}}</p>
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-            </div>
-            <small class="text-muted">{{property.createdAt | dateAgo}}</small>
+    <div class="form-group col-md-4">
+      <select class="form-control" id="ddlTypes" [(ngModel)]="type" (ngModelChange)="onSortChange(type)">
+        <option *ngFor="let item of types" [value]="item.value">{{ item.label }}</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <select id="ddlCities" class="form-control" [(ngModel)]='selectedCity' (ngModelChange)="getProperties(selectedCity)" placeholder="Select City">
+        <option [value]="-1" selected>All Cities</option>
+        <optgroup *ngFor='let grp of groupedCities' label="{{grp.label}}">
+          <option *ngFor='let item of grp.items' [value]="item.value">{{item.label}}</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="lblRent">Rent: {{0 + ' - ' + rentValue * 50}}</label>
+      <input type="range" class="custom-range" min="0" max="100" step="1" id="rangeRent" [(ngModel)]="rentValue" (change)="onYearChange()">
+    </div>
+  </div>
+<div class="row">
+  <div class="col-md-4" *ngFor="let property of properties">
+    <div class="card mb-4 box-shadow">
+      <div class="card-header"><b>({{property.user.phoneNumber | slice:0:3 }}) {{property.user.phoneNumber | slice:3:6}}-{{property.user.phoneNumber | slice:6:10}}</b></div>
+      <img src="../../../../assets/images/ce42d94f-afd1-4865-ace9-5a6aea30e88d/{{property.propertyId}}/01.png" alt="Card image cap" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">${{property.rent}} - {{property.room}} Bedroom</h5>
+        <p class="card-text">{{property.description}}</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
           </div>
+          <small class="text-muted">{{property.createdAt | dateAgo}}</small>
         </div>
       </div>
     </div>
-    <nav aria-label="Page navigation example">
-      <jw-pagination [totalCount]="10" [size]="pageSize" (changePage)="loadData($event)"></jw-pagination>
-    </nav>
   </div>
+  <nav aria-label="Page navigation example">
+    <jw-pagination [totalCount]="totalCount" [size]="pageSize" (changePage)="loadData($event)"></jw-pagination>
+  </nav>
+</div>
